@@ -1,14 +1,11 @@
 require 'sinatra'
 require 'sinatra/reloader'
-require 'json'
+require 'csv'
+require 'securerandom'
 
-class Memo
-  def initialize()
-    @id = null
-    @title = null
-    @text = null
-  end
-end
+database_path = 'database/data.csv'
+csv = CSV.read(database_path)
+
 get "/" do
   erb :index
 end
@@ -26,9 +23,8 @@ end
 post "/confirm" do
   @title = params[:title]
   @text = params[:text]
-  File.open("database/data.json", "a") do |w|
-    data = {"ID" => 1, "title" => @title, "text" => @text}
-    w.write(data.to_json)
+  CSV.open(database_path, "a") do |csv|
+    csv.puts [SecureRandom.uuid,@title,@text,Time.now]
   end
   redirect to('/')
 end
