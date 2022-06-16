@@ -7,6 +7,10 @@ database_path = 'database/data.csv'
 csv = CSV.read(database_path)
 
 get "/" do
+  @memoes = []
+  CSV.foreach(database_path,headers: true) do |row|
+      @memoes.push(row)
+    end
   erb :index
 end
 
@@ -14,13 +18,19 @@ get"/create" do
   erb :create
 end
 
-get "/memoes/:id" do |name|
-  memo
+get "/memoes/:id" do
+  CSV.foreach(database_path,headers: true) do |row|
+    if row['ID'] == params[:id]
+      @title = row['Title']
+      @text = row['Text']
+      @id = row['ID']
+    end
+  end
   erb :detail
 end
 
-# 入力したデータがjsonファイル(database/data.json)にプッシュされるはず....
-post "/confirm" do
+# 入力したデータがjsonファイル(database/data.csv)にプッシュされるはず....
+post "/create" do
   @title = params[:title]
   @text = params[:text]
   CSV.open(database_path, "a") do |csv|
@@ -28,6 +38,16 @@ post "/confirm" do
   end
   redirect to('/')
 end
+
+delete "/memoes/:id" do
+  CSV.foreach(database_path,headers: true) do |row|
+    if row['ID'] == params[:id]
+      CSV::Row.delete(row)
+      row.delete
+    end
+  end
+end
+
 
 #　editの時に使うpatch処理
 # patch "/edit/*" do
