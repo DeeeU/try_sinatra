@@ -1,7 +1,8 @@
 <h1>Edit</h1>
-<h2><%= @title %></h2>
+
+<a href='/' input type="button" value="">ホームに戻る</a>
 <p>Title</p>
-<input type="text" id="title" placeholder="title">
+<input type="text" id="title" placeholder="title" value="<%= @title %>">
 <p>Text</p>
-<input type="text" id="text" placeholder="text">
-<input type="submit" value="保存">
+<input type="text" id="text" placeholder="text" value="<%= @text %>" ></br>
+ <input type="button" href="/memos/<%= @id %>/edit"value="変更" />

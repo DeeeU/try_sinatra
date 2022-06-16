@@ -48,8 +48,23 @@ delete "/memoes/:id" do
   end
 end
 
+get "/memoes/:id/edit" do
+  CSV.foreach(database_path,headers: true) do |row|
+    if row['ID'] == params[:id]
+      @title = row['Title']
+      @text = row['Text']
+      @id = row['ID']
+    end
+  end
+  erb :edit
+end
 
 #　editの時に使うpatch処理
-# patch "/edit/*" do
-
-# end
+patch "/memoes/:id/edit" do
+  CSV.open(database_path, "w") do |csv|
+    @title = params[:title]
+    @text = params[:text]
+    csv.puts [memo['ID'],memo['Title'],memo['Text'],memo['Time']]
+  end
+  redirect to('/memoes/#{params[:id]}')
+end
