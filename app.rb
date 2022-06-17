@@ -7,6 +7,12 @@ require 'securerandom'
 
 enable :method_override
 
+helpers do
+  def h(text)
+    Rack::Utils.escape_html(text)
+  end
+end
+
 database_path = 'database/data.csv'
 csv = CSV.read(database_path)
 
