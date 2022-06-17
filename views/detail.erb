@@ -6,10 +6,10 @@
 <%= @title %>
 <h2>Text</h2>
 <%= @text %>
-<h2>ID</h2>
-<%= @id %>
 </br>
 
-<a href='/memoes/<%= @id %>/edit' input type="button" value="">変更</a>
-
-<a href='/' input type="button" value="">削除</a>
+<form method="POST" action="<%= @id %>">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="submit" value="削除">
+    <a href="/memoes/<%= @id %>/edit" value="編集">編集</a>
+</form>

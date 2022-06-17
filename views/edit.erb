@@ -2,7 +2,13 @@
 
 <a href='/' input type="button" value="">ホームに戻る</a>
 <p>Title</p>
-<input type="text" id="title" placeholder="title" value="<%= @title %>">
-<p>Text</p>
-<input type="text" id="text" placeholder="text" value="<%= @text %>" ></br>
- <input type="button" href="/memos/<%= @id %>/edit"value="変更" />
+
+<form action="" method="POST">
+  <input name="title" placeholder="title" value="<%= @title %>">
+  <p>Text</p>
+  <input name="text" placeholder="text" value="<%= @text %>" >
+  </br>
+
+  <input type="hidden" name="_method" value="PATCH">
+  <input type= "submit" value="変更">
+</form>

@@ -3,6 +3,8 @@ require 'sinatra/reloader'
 require 'csv'
 require 'securerandom'
 
+enable :method_override
+
 database_path = 'database/data.csv'
 csv = CSV.read(database_path)
 
@@ -39,13 +41,14 @@ post "/create" do
   redirect to('/')
 end
 
-delete "/memoes/:id" do
-  CSV.foreach(database_path,headers: true) do |row|
-    if row['ID'] == params[:id]
-      CSV::Row.delete(row)
-      row.delete
+delete '/memoes/:id' do
+  csv.delete_if{ |row| row[0] ==  params[:id]}
+  CSV.open(database_path, 'w') do |data|
+    csv.each do |array|
+      data << array
     end
   end
+  redirect to('/')
 end
 
 get "/memoes/:id/edit" do
@@ -61,10 +64,14 @@ end
 
 #　editの時に使うpatch処理
 patch "/memoes/:id/edit" do
-  CSV.open(database_path, "w") do |csv|
-    @title = params[:title]
-    @text = params[:text]
-    csv.puts [memo['ID'],memo['Title'],memo['Text'],memo['Time']]
+  csv.delete_if{ |row| row[0] ==  params[:id]}
+  CSV.open(database_path, 'w') do |data|
+    csv.each do |array|
+      data << array
+    end
   end
-  redirect to('/memoes/#{params[:id]}')
+  CSV.open(database_path, "a") do |csv1|
+    csv1.puts [params[:id],params[:title],params[:text],Time.now]
+  end
+  redirect to('/')
 end
