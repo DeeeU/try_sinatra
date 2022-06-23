@@ -1,20 +1,21 @@
 # try_sinatra
 
-sinatra と自動更新の導入
+git clone した後に以下のコマンドを実行してください
 
-```
-gem 'sinatra'
-gem 'sinatra-contrib'
+ディレクトリの移動
+
+```bash
+$cd try_sinatra
 ```
 
-puma の導入
+gem の導入
 
-```
-gem install puma
+```bash
+$bundle install
 ```
 
 立ち上げ方
 
-```
-bundle exec ruby app.rb
+```bash
+$bundle exec ruby app.rb
 ```
