@@ -1,16 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (7.0.3)
-      concurrent-ruby (~> 1.0, >= 1.0.2)
-      i18n (>= 1.6, < 2)
-      minitest (>= 5.1)
-      tzinfo (~> 2.0)
     ast (2.4.2)
-    concurrent-ruby (1.1.10)
-    i18n (1.10.0)
-      concurrent-ruby (~> 1.0)
-    minitest (5.16.0)
     multi_json (1.15.0)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
@@ -43,10 +34,6 @@ GEM
     rubocop-performance (1.14.2)
       rubocop (>= 1.7.0, < 2.0)
       rubocop-ast (>= 0.4.0)
-    rubocop-rails (2.15.0)
-      activesupport (>= 4.2.0)
-      rack (>= 1.1)
-      rubocop (>= 1.7.0, < 2.0)
     ruby-progressbar (1.11.0)
     ruby2_keywords (0.0.5)
     sinatra (2.2.0)
@@ -61,8 +48,6 @@ GEM
       sinatra (= 2.2.0)
       tilt (~> 2.0)
     tilt (2.0.10)
-    tzinfo (2.0.4)
-      concurrent-ruby (~> 1.0)
     unicode-display_width (2.1.0)
 
 PLATFORMS
@@ -71,7 +56,6 @@ PLATFORMS
 DEPENDENCIES
   puma
   rubocop-fjord
-  rubocop-rails
   sinatra
   sinatra-contrib
 
