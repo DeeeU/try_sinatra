@@ -2,6 +2,6 @@
 <button type="submit" onclick="location.href='/create'">Create Memo</button>
 <p>
 <% @memoes.each do |memo| %>
-  <a href='/memoes/<%= memo[0] %>'> <%= memo[1] %></a></br>
+  <a href='/memoes/<%= memo['ID'] %>'> <%= memo['Title'] %></a></br>
 <% end %>
 </p>
