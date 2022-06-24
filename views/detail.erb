@@ -1,6 +1,6 @@
 <h1>Detail</h1>
 
-<a href='/' input type="button" value="">ホームに戻る</a>
+<a href='/'>Home</a>
 
 <h2>Title</h2>
 <%= @title %>
@@ -9,7 +9,7 @@
 </br>
 
 <form method="POST" action="<%= @id %>">
-    <input type="hidden" name="_method" value="delete">
-    <input type="submit" value="delete">
-    <a href="/memoes/<%= @id %>/edit" value="edit">Edit</a>
+    <input type="hidden" name="_method" value="Delete">
+    <input type="submit" value="Delete">
+    <a href="/memoes/<%= @id %>/edit" value="Edit">Edit</a>
 </form>
