@@ -17,6 +17,7 @@ database_path = 'database/data.csv'
 csv = CSV.read(database_path)
 
 get '/' do
+  @page_name = "Top"
   @memoes = []
   CSV.foreach(database_path, headers: true) do |row|
     @memoes.push(row)
@@ -25,10 +26,12 @@ get '/' do
 end
 
 get '/create' do
+  @page_name = "Create"
   erb :create
 end
 
 get '/memoes/:id' do
+  @page_name = "Detail"
   CSV.foreach(database_path, headers: true) do |row|
     if row['ID'] == params[:id]
       @title = row['Title']
@@ -60,6 +63,7 @@ delete '/memoes/:id' do
 end
 
 get '/memoes/:id/edit' do
+  @page_name = "Edit"
   CSV.foreach(database_path, headers: true) do |row|
     if row['ID'] == params[:id]
       @title = row['Title']
