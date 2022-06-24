@@ -1,5 +1,5 @@
 <h1>Sinatra Sample</h1>
-<button type="submit" onclick="location.href='/create'">追加</button>
+<button type="submit" onclick="location.href='/create'">Add</button>
 <p>
 <% @memoes.each do |memo| %>
   <a href='/memoes/<%= memo[0] %>'> <%= memo[1] %></a></br>
