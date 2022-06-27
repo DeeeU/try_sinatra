@@ -5,8 +5,6 @@ require 'sinatra/reloader'
 require 'csv'
 require 'securerandom'
 
-enable :method_override
-
 helpers do
   def h(text)
     Rack::Utils.escape_html(text)
@@ -18,14 +16,14 @@ csv = CSV.read(database_path)
 
 get '/' do
   @page_name = "Top"
-  @memoes = []
+  @memoes_data = []
   CSV.foreach(database_path, headers: true) do |row|
-    @memoes.push(row)
+    @memoes_data.push(row)
   end
   erb :index
 end
 
-get '/create' do
+get '/memoes' do
   @page_name = "Create"
   erb :create
 end
@@ -43,7 +41,7 @@ get '/memoes/:id' do
 end
 
 # 入力したデータがjsonファイル(database/data.csv)にプッシュされるはず....
-post '/create' do
+post '/memoes' do
   @title = params[:title]
   @text = params[:text]
   CSV.open(database_path, 'a') do |csv0|
