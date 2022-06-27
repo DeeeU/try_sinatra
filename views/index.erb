@@ -3,5 +3,6 @@
 <p>
 <% @memoes_data.each do |memo| %>
   <a href='/memoes/<%= memo['ID'] %>'> <%= memo['Title'] %></a>
+  <br>
 <% end %>
 </p>
