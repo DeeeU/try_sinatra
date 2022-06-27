@@ -62,7 +62,7 @@ end
 
 get '/memoes/:id/edit' do
   @page_name = 'Edit'
-  CSV.foreach(Database_path, headers: true) do |row|
+  CSV.foreach(DATABASE_PATH, headers: true) do |row|
     if row['ID'] == params[:id]
       @title = row['Title']
       @text = row['Text']
@@ -74,12 +74,12 @@ end
 
 patch '/memoes/:id/edit' do
   csv.delete_if { |row| row[0] == params[:id] }
-  CSV.open(Database_path, 'w') do |data|
+  CSV.open(DATABASE_PATH, 'w') do |data|
     csv.each do |array|
       data << array
     end
   end
-  CSV.open(Database_path, 'a') do |csv1|
+  CSV.open(DATABASE_PATH, 'a') do |csv1|
     csv1.puts [params[:id], h(params[:title]), h(params[:text]), Time.now]
   end
   redirect to('/')
