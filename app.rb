@@ -45,7 +45,7 @@ post '/memoes' do
   @title = params[:title]
   @text = params[:text]
   CSV.open(database_path, 'a') do |csv0|
-    csv0.puts [SecureRandom.uuid, @title, @text, Time.now]
+    csv0.puts [SecureRandom.uuid, h(@title), h(@text), Time.now]
   end
   redirect to('/')
 end
@@ -80,7 +80,7 @@ patch '/memoes/:id/edit' do
     end
   end
   CSV.open(database_path, 'a') do |csv1|
-    csv1.puts [params[:id], params[:title], params[:text], Time.now]
+    csv1.puts [params[:id], h(params[:title]), h(params[:text]), Time.now]
   end
   redirect to('/')
 end
