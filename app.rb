@@ -47,7 +47,7 @@ post '/memoes' do
   CSV.open(DATABASE_PATH, 'a') do |csv0|
     csv0.puts [SecureRandom.uuid, h(@title), h(@text), Time.now]
   end
-  redirect to('/')
+  redirect to('/Top')
 end
 
 delete '/memoes/:id' do
