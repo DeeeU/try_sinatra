@@ -11,26 +11,26 @@ helpers do
   end
 end
 
-Database_path = 'database/data.csv'
-csv = CSV.read(Database_path)
+DATABASE_PATH = 'database/data.csv'
+csv = CSV.read(DATABASE_PATH)
 
 get '/' do
-  @page_name = "Top"
+  @page_name = 'Top'
   @memoes_data = []
-  CSV.foreach(Database_path, headers: true) do |row|
+  CSV.foreach(DATABASE_PATH, headers: true) do |row|
     @memoes_data.push(row)
   end
   erb :index
 end
 
 get '/memoes' do
-  @page_name = "Create"
+  @page_name = 'Create'
   erb :create
 end
 
 get '/memoes/:id' do
-  @page_name = "Detail"
-  CSV.foreach(Database_path, headers: true) do |row|
+  @page_name = 'Detail'
+  CSV.foreach(DATABASE_PATH, headers: true) do |row|
     if row['ID'] == params[:id]
       @title = row['Title']
       @text = row['Text']
@@ -44,7 +44,7 @@ end
 post '/memoes' do
   @title = params[:title]
   @text = params[:text]
-  CSV.open(Database_path, 'a') do |csv0|
+  CSV.open(DATABASE_PATH, 'a') do |csv0|
     csv0.puts [SecureRandom.uuid, h(@title), h(@text), Time.now]
   end
   redirect to('/')
@@ -52,7 +52,7 @@ end
 
 delete '/memoes/:id' do
   csv.delete_if { |row| row[0] == params[:id] }
-  CSV.open(Database_path, 'w') do |data|
+  CSV.open(DATABASE_PATH, 'w') do |data|
     csv.each do |array|
       data << array
     end
@@ -61,7 +61,7 @@ delete '/memoes/:id' do
 end
 
 get '/memoes/:id/edit' do
-  @page_name = "Edit"
+  @page_name = 'Edit'
   CSV.foreach(Database_path, headers: true) do |row|
     if row['ID'] == params[:id]
       @title = row['Title']
