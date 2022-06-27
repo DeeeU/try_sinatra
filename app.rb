@@ -14,7 +14,7 @@ end
 DATABASE_PATH = 'database/data.csv'
 csv = CSV.read(DATABASE_PATH)
 
-get '/' do
+get '/Top' do
   @page_name = 'Top'
   @memoes_data = []
   CSV.foreach(DATABASE_PATH, headers: true) do |row|
@@ -57,7 +57,7 @@ delete '/memoes/:id' do
       data << array
     end
   end
-  redirect to('/')
+  redirect to('/Top')
 end
 
 get '/memoes/:id/edit' do
@@ -82,5 +82,5 @@ patch '/memoes/:id/edit' do
   CSV.open(DATABASE_PATH, 'a') do |csv1|
     csv1.puts [params[:id], h(params[:title]), h(params[:text]), Time.now]
   end
-  redirect to('/')
+  redirect to('/Top')
 end
