@@ -14,7 +14,7 @@ end
 DATABASE_PATH = 'database/data.csv'
 csv = CSV.read(DATABASE_PATH)
 
-get '/top' do
+get '/memos' do
   @page_name = 'Top'
   @memoes_data = []
   CSV.foreach(DATABASE_PATH, headers: true) do |row|
@@ -23,12 +23,12 @@ get '/top' do
   erb :index
 end
 
-get '/memoes' do
+get '/new' do
   @page_name = 'Create'
   erb :create
 end
 
-get '/memoes/:id' do
+get '/memos/:id' do
   @page_name = 'Detail'
   CSV.foreach(DATABASE_PATH, headers: true) do |row|
     if row['ID'] == params[:id]
@@ -41,26 +41,26 @@ get '/memoes/:id' do
 end
 
 # 入力したデータがjsonファイル(database/data.csv)にプッシュされるはず....
-post '/memoes' do
+post '/new' do
   @title = params[:title]
   @text = params[:text]
   CSV.open(DATABASE_PATH, 'a') do |csv0|
-    csv0.puts [SecureRandom.uuid, h(@title), h(@text), Time.now]
+    csv0.puts [SecureRandom.uuid, @title, @text, Time.now]
   end
-  redirect to('/top')
+  redirect to('/memos')
 end
 
-delete '/memoes/:id' do
+delete '/memos/:id' do
   csv.delete_if { |row| row[0] == params[:id] }
   CSV.open(DATABASE_PATH, 'w') do |data|
     csv.each do |array|
       data << array
     end
   end
-  redirect to('/top')
+  redirect to('/memos')
 end
 
-get '/memoes/:id/edit' do
+get '/memos/:id/edit' do
   @page_name = 'Edit'
   CSV.foreach(DATABASE_PATH, headers: true) do |row|
     if row['ID'] == params[:id]
@@ -72,7 +72,7 @@ get '/memoes/:id/edit' do
   erb :edit
 end
 
-patch '/memoes/:id/edit' do
+patch '/memos/:id/edit' do
   csv.delete_if { |row| row[0] == params[:id] }
   CSV.open(DATABASE_PATH, 'w') do |data|
     csv.each do |array|
@@ -80,7 +80,7 @@ patch '/memoes/:id/edit' do
     end
   end
   CSV.open(DATABASE_PATH, 'a') do |csv1|
-    csv1.puts [params[:id], h(params[:title]), h(params[:text]), Time.now]
+    csv1.puts [params[:id], params[:title], params[:text], Time.now]
   end
-  redirect to('/top')
+  redirect to('/memos')
 end

@@ -1,12 +1,12 @@
 <h1>Detail</h1>
-<a href='/top'>Home</a>
+<a href='/memos'>Home</a>
 <h2>Title</h2>
-<%= @title %>
+<%= h(@title) %>
 <h2>Text</h2>
-<%= @text %>
+<%= h(@text) %>
 
 <form method="POST" action="<%= @id %>">
     <input type="hidden" name="_method" value="Delete">
     <input type="submit" value="Delete">
-    <a href="/memoes/<%= @id %>/edit">Edit</a>
+    <a href="/memos/<%= @id %>/edit">Edit</a>
 </form>
