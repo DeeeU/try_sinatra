@@ -5,6 +5,8 @@ require 'sinatra/reloader'
 require 'csv'
 require 'securerandom'
 
+enable :method_override
+
 helpers do
   def h(text)
     Rack::Utils.escape_html(text)
@@ -16,10 +18,7 @@ csv = CSV.read(DATABASE_PATH)
 
 get '/memos' do
   @page_name = 'Top'
-  @memoes_data = []
-  CSV.foreach(DATABASE_PATH, headers: true) do |row|
-    @memoes_data.push(row)
-  end
+  @memos_data = CSV.read(DATABASE_PATH, headers: true)
   erb :index
 end
 
