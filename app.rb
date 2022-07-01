@@ -14,7 +14,7 @@ helpers do
 end
 
 DATABASE_PATH = 'database/data.csv'
-csv = CSV.read(DATABASE_PATH)
+# csv = CSV.read(DATABASE_PATH)
 
 get '/memos' do
   @page_name = 'Top'
@@ -29,33 +29,39 @@ end
 
 get '/memos/:id' do
   @page_name = 'Detail'
-  CSV.foreach(DATABASE_PATH, headers: true) do |row|
+  @memos_data = CSV.read(DATABASE_PATH, headers: true)
+  @memos_data.each {|row|
     if row['ID'] == params[:id]
       @title = row['Title']
       @text = row['Text']
       @id = row['ID']
     end
-  end
+  }
   erb :detail
 end
 
 # 入力したデータがjsonファイル(database/data.csv)にプッシュされるはず....
 post '/new' do
-  @title = params[:title]
-  @text = params[:text]
-  CSV.open(DATABASE_PATH, 'a') do |csv0|
-    csv0.puts [SecureRandom.uuid, @title, @text, Time.now]
-  end
+  @memos_data = CSV.read(DATABASE_PATH, headers: true)
+  @memos_data.push [SecureRandom.uuid.to_s, params[:title], params[:text], Time.now.to_s]
+  # CSV.open(DATABASE_PATH, 'a') do |csv0|
+  #   csv0.puts [SecureRandom.uuid, @title, @text, Time.now]
+  # end
   redirect to('/memos')
 end
 
 delete '/memos/:id' do
-  csv.delete_if { |row| row[0] == params[:id] }
-  CSV.open(DATABASE_PATH, 'w') do |data|
-    csv.each do |array|
-      data << array
-    end
-  end
+  # 前の
+  # csv.delete_if { |row| row[0] == params[:id] }
+  # CSV.open(DATABASE_PATH, 'w') do |data|
+  #   csv.each do |array|
+  #     data << array
+  #   end
+  # end
+  # 現在
+  @memos_data = CSV.open(DATABASE_PATH, headers: true) do |data|
+
+  # @memos_data.delete_if { |row| row['ID'] == params[:id].to_s }
   redirect to('/memos')
 end
 
