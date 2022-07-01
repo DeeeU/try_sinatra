@@ -42,11 +42,9 @@ end
 
 # 入力したデータがjsonファイル(database/data.csv)にプッシュされるはず....
 post '/new' do
-  @memos_data = CSV.read(DATABASE_PATH, headers: true)
-  @memos_data.push [SecureRandom.uuid.to_s, params[:title], params[:text], Time.now.to_s]
-  # CSV.open(DATABASE_PATH, 'a') do |csv0|
-  #   csv0.puts [SecureRandom.uuid, @title, @text, Time.now]
-  # end
+  CSV.open(DATABASE_PATH, 'a') do |data|
+    data.puts [SecureRandom.uuid, params[:title], params[:text], Time.now]
+  end
   redirect to('/memos')
 end
 
