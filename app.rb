@@ -55,12 +55,12 @@ delete '/memos/:id' do
   #   csv.each do |array|
   #     data << array
   #   end
-  # end
   # 現在
   @memos_data = CSV.open(DATABASE_PATH, headers: true) do |data|
 
-  # @memos_data.delete_if { |row| row['ID'] == params[:id].to_s }
-  redirect to('/memos')
+    # @memos_data.delete_if { |row| row['ID'] == params[:id].to_s }
+    redirect to('/memos')
+  end
 end
 
 get '/memos/:id/edit' do
