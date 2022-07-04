@@ -1,5 +1,5 @@
 <h1>Sinatra Sample</h1>
-<input type="button" onclick="location.href='/new'" value="Create Memo">
+<input type="button" onclick="location.href='/memos/new'" value="Create Memo">
 <p>
 <% @memos_data.each do |memo| %>
   <a href='/memos/<%= memo['id'] %>'> <%= h(memo['title']) %></a>

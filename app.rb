@@ -22,7 +22,7 @@ get '/memos' do
   erb :index
 end
 
-get '/new' do
+get '/memos/new' do
   @page_name = 'Create'
   erb :create
 end
@@ -41,7 +41,7 @@ get '/memos/:id' do
 end
 
 # 入力したデータがjsonファイル(database/data.csv)にプッシュされるはず....
-post '/new' do
+post '/memos/new' do
   CSV.open(DATABASE_PATH, 'a') do |data|
     data.puts [SecureRandom.uuid, params[:title], params[:text], Time.now]
   end
