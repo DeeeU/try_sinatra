@@ -29,8 +29,8 @@ end
 
 get '/memos/:id' do
   @page_name = 'Detail'
-  @memos_data = CSV.read(DATABASE_PATH, headers: true)
-  @memos_data.each {|row|
+  memos_data = CSV.read(DATABASE_PATH, headers: true)
+  memos_data.each {|row|
     if row['id'] == params[:id]
       @title = row['title']
       @text = row['text']
