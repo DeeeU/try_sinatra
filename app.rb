@@ -70,5 +70,12 @@ get '/memos/:id/edit' do
 end
 
 patch '/memos/:id/edit' do
+  csv_table = CSV.table(DATABASE_PATH)
+  change_col = csv_table.find{|row| row[0] == params[:id]}
+  change_col[:title] = params[:title]
+  change_col[:text] = params[:text]
+  File.open(DATABASE_PATH, 'w') do |data|
+    data.write(csv_table.to_csv)
+  end
   redirect to('/memos')
 end
