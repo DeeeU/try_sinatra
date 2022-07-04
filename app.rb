@@ -51,7 +51,7 @@ end
 delete '/memos/:id' do
   csv_table = CSV.table(DATABASE_PATH)
   csv_table.delete_if { |row| row[0] == params[:id] }
-  File.open(DATABASE_PATH, 'w', headers: true) do |data|
+  File.open(DATABASE_PATH, 'w') do |data|
     data.write(csv_table.to_csv)
   end
   redirect to('/memos')
@@ -70,13 +70,5 @@ get '/memos/:id/edit' do
 end
 
 patch '/memos/:id/edit' do
-  csv.delete_if { |row| row[0] == params[:id] }
-  CSV.open(DATABASE_PATH, 'w') do |data|
-    csv.each do |array|
-      data << array
-    end
-  end
-  CSV.open(DATABASE_PATH, 'a') do |csv1|
-  end
   redirect to('/memos')
 end
