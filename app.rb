@@ -31,10 +31,10 @@ get '/memos/:id' do
   @page_name = 'Detail'
   @memos_data = CSV.read(DATABASE_PATH, headers: true)
   @memos_data.each {|row|
-    if row['ID'] == params[:id]
-      @title = row['Title']
-      @text = row['Text']
-      @id = row['ID']
+    if row['id'] == params[:id]
+      @title = row['title']
+      @text = row['text']
+      @id = row['id']
     end
   }
   erb :detail
@@ -49,18 +49,12 @@ post '/new' do
 end
 
 delete '/memos/:id' do
-  # 前の
-  # csv.delete_if { |row| row[0] == params[:id] }
-  # CSV.open(DATABASE_PATH, 'w') do |data|
-  #   csv.each do |array|
-  #     data << array
-  #   end
-  # 現在
-  @memos_data = CSV.open(DATABASE_PATH, headers: true) do |data|
-
-    # @memos_data.delete_if { |row| row['ID'] == params[:id].to_s }
-    redirect to('/memos')
+  csv_table = CSV.table(DATABASE_PATH)
+  csv_table.delete_if { |row| row[0] == params[:id] }
+  File.open(DATABASE_PATH, 'w', headers: true) do |data|
+    data.write(csv_table.to_csv)
   end
+  redirect to('/memos')
 end
 
 get '/memos/:id/edit' do
@@ -76,6 +70,11 @@ get '/memos/:id/edit' do
 end
 
 patch '/memos/:id/edit' do
+  # table作る（メモリー上で使えるように）
+  # 行を見つける(id使え)
+  # csv1.puts [params[:id], params[:title], params[:text], Time.now]みたいなやつで書き換え
+  # 保存する
+
   csv.delete_if { |row| row[0] == params[:id] }
   CSV.open(DATABASE_PATH, 'w') do |data|
     csv.each do |array|
@@ -83,7 +82,6 @@ patch '/memos/:id/edit' do
     end
   end
   CSV.open(DATABASE_PATH, 'a') do |csv1|
-    csv1.puts [params[:id], params[:title], params[:text], Time.now]
   end
   redirect to('/memos')
 end
