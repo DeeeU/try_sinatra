@@ -60,21 +60,16 @@ end
 get '/memos/:id/edit' do
   @page_name = 'Edit'
   CSV.foreach(DATABASE_PATH, headers: true) do |row|
-    if row['ID'] == params[:id]
-      @title = row['Title']
-      @text = row['Text']
-      @id = row['ID']
+    if row['id'] == params[:id]
+      @title = row['title']
+      @text = row['text']
+      @id = row['id']
     end
   end
   erb :edit
 end
 
 patch '/memos/:id/edit' do
-  # table作る（メモリー上で使えるように）
-  # 行を見つける(id使え)
-  # csv1.puts [params[:id], params[:title], params[:text], Time.now]みたいなやつで書き換え
-  # 保存する
-
   csv.delete_if { |row| row[0] == params[:id] }
   CSV.open(DATABASE_PATH, 'w') do |data|
     csv.each do |array|
