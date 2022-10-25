@@ -14,7 +14,6 @@ helpers do
 end
 
 DATABASE_PATH = 'database/data.csv'
-# csv = CSV.read(DATABASE_PATH)
 
 get '/memos' do
   @page_name = 'Top'
@@ -40,7 +39,6 @@ get '/memos/:id' do
   erb :detail
 end
 
-# 入力したデータがjsonファイル(database/data.csv)にプッシュされるはず....
 post '/memos/new' do
   CSV.open(DATABASE_PATH, 'a') do |data|
     data.puts [SecureRandom.uuid, params[:title], params[:text], Time.now]
