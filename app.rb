@@ -28,14 +28,11 @@ end
 
 get '/memos/:id' do
   @page_name = 'Detail'
-  memos_data = CSV.read(DATABASE_PATH, headers: true)
-  memos_data.each {|row|
-    if row['id'] == params[:id]
-      @title = row['title']
-      @text = row['text']
-      @id = row['id']
-    end
-  }
+  memo_table = CSV.table(DATABASE_PATH, headers: true)
+  memo_col = memo_table.find{|row| row[0] == params[:id]}
+  @title = memo_col[:title]
+  @text = memo_col[:text]
+  @id = memo_col[:id]
   erb :detail
 end
 
