@@ -2,11 +2,11 @@
 <a href='/memos'>Home</a>
 <form action="" method="POST">
   <div>
-    title:<input name="title" placeholder="title" value="<%= h(@title) %>">
+    title:<input name="title" placeholder="title" value="<%= h(@memo['title']) %>">
   </div>
   <div>
     text:
-    <textarea name="text" rows="5" placeholder="text"><%= h(@text) %></textarea>
+    <textarea name="text" rows="5" placeholder="text"><%= h(@memo['text']) %></textarea>
   </div>
   <div>
     <input type="hidden" name="_method" value="patch">

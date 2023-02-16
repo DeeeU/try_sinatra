@@ -54,11 +54,16 @@ end
 
 get '/memos/:id/edit' do
   @page_name = 'Edit'
+  @memo ={
+    'title' => '',
+    'text' => '',
+    'id' => ''
+  }
   CSV.foreach(DATABASE_PATH, headers: true) do |row|
     if row['id'] == params[:id]
-      @title = row['title']
-      @text = row['text']
-      @id = row['id']
+      @memo['title'] = row['title']
+      @memo['text'] = row['text']
+      @memo['id'] = row['id']
     end
   end
   erb :edit
