@@ -69,7 +69,7 @@ get '/memos/:id/edit' do
   erb :edit
 end
 
-patch '/memos/:id/edit' do
+patch '/memos/:id' do
   csv_table = CSV.table(DATABASE_PATH)
   change_col = csv_table.find{|row| row[0] == params[:id]}
   change_col[:title] = params[:title]
