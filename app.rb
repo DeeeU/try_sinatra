@@ -36,7 +36,7 @@ get '/memos/:id' do
   erb :detail
 end
 
-post '/memos/new' do
+post '/memos' do
   CSV.open(DATABASE_PATH, 'a') do |data|
     data.puts [SecureRandom.uuid, params[:title], params[:text], Time.now]
   end
