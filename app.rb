@@ -28,11 +28,16 @@ end
 
 get '/memos/:id' do
   @page_name = 'Detail'
+  @memo = {
+    'title' => '',
+    'text' => '',
+    'id' => ''
+  }
   memo_table = CSV.table(DATABASE_PATH, headers: true)
   memo_col = memo_table.find{|row| row[0] == params[:id]}
-  @title = memo_col[:title]
-  @text = memo_col[:text]
-  @id = memo_col[:id]
+  @memo['title'] = memo_col[:title]
+  @memo['text'] = memo_col[:text]
+  @memo['id'] = memo_col[:id]
   erb :detail
 end
 
@@ -54,7 +59,7 @@ end
 
 get '/memos/:id/edit' do
   @page_name = 'Edit'
-  @memo ={
+  @memo = {
     'title' => '',
     'text' => '',
     'id' => ''
