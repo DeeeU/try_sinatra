@@ -17,7 +17,7 @@ DATABASE_PATH = 'database/data.csv'
 
 get '/memos' do
   @page_name = 'Top'
-  @memos_data = CSV.read(DATABASE_PATH, headers: true)
+  @memos = CSV.read(DATABASE_PATH, headers: true)
   erb :index
 end
 
