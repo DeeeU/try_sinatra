@@ -14,6 +14,11 @@ gem の導入
 $bundle install
 ```
 
+DB(memoes)の作成
+```db
+$psql -f database/data.sql -d memoes
+```
+
 立ち上げ方
 
 ```bash
