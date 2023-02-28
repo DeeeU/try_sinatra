@@ -5,8 +5,8 @@
 <h2>Text</h2>
 <%= h(@memo['text']) %>
 
-<form method="POST" action="<%= @id %>">
+<form method="POST" action="<%= @memo['id'] %>">
     <input type="hidden" name="_method" value="delete">
     <input type="submit" value="Delete">
-    <a href="/memos/<%= @id %>/edit">Edit</a>
+    <a href="/memos/<%= @memo['id'] %>/edit">Edit</a>
 </form>
