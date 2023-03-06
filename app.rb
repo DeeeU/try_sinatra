@@ -38,7 +38,7 @@ end
 def excute(query, params)
     connection = PG::Connection.new(dbname: 'postgres')
     connection.exec_params(query, params)
-  end
+end
 
 conn = PG.connect( dbname: 'postgres' )
 result = conn.exec("SELECT * FROM memoes")
