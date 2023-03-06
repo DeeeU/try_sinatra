@@ -16,7 +16,7 @@ $bundle install
 
 DB(memoes)の作成
 ```db
-$psql -f database/data.sql -d memoes
+$ruby database/data.rb
 ```
 
 立ち上げ方
