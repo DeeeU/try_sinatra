@@ -36,8 +36,8 @@ class Memo
 end
 
 def excute(query, params)
-    connection = PG::Connection.new(dbname: 'postgres')
-    connection.exec_params(query, params)
+  connection = PG::Connection.new(dbname: 'postgres')
+  connection.exec_params(query, params)
 end
 
 conn = PG.connect( dbname: 'postgres' )
