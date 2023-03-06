@@ -16,31 +16,38 @@ end
 
 
 class Memo
-
-  def self.create(title: memo_title, text: memot_text)
-    connection = PG.connect( dbname: 'db_sinatra' )
-    connection.exec( "INSERT INTO memoes(title, text) VALUES ('#{title}', '#{text}')" )
+  def self.create(title: memo_title, text: memo_text)
+    query = "INSERT INTO memoes(title, text) VALUES ($1, $2)"
+    params = [title, text]
+    excute(query, params)
   end
 
   def self.delete(id: memo_id)
-    connection = PG.connect( dbname: 'db_sinatra' )
-    connection.exec( " DELETE FROM  memoes where id = '#{id}'" )
+    query = "DELETE FROM  memoes where id = ($1)"
+    params = [id]
+    excute(query, params)
   end
 
   def self.patch(id: memo_id, title: memo_title, text: memot_text)
-    connection = PG.connect( dbname: 'db_sinatra')
-    connection.exec( "UPDATE memoes SET (title, text) = ('#{title}', '#{text}') where id = '#{id}'" )
+    query = "UPDATE memoes SET (title, text) = ($1, $2) where id = ($3)"
+    params = [title, text,id]
+    excute(query, params)
   end
 end
 
-conn = PG.connect( dbname: 'db_sinatra' )
+def excute(query, params)
+    connection = PG::Connection.new(dbname: 'postgres')
+    connection.exec_params(query, params)
+  end
+
+conn = PG.connect( dbname: 'postgres' )
 result = conn.exec("SELECT * FROM memoes")
 conn.close
 
 
 get '/memos' do
   @page_name = 'Top'
-  conn = PG::Connection.new(:host => 'localhost',  :dbname => 'db_sinatra', :port => '5432')
+  conn = PG::Connection.new(:host => 'localhost',  :dbname => 'postgres', :port => '5432')
   result = conn.exec("SELECT * FROM memoes")
   conn.close
   @memos = result
