@@ -14,23 +14,22 @@ helpers do
   end
 end
 
-
 class Memo
   def self.create(title: memo_title, text: memo_text)
-    query = "INSERT INTO memoes(title, text) VALUES ($1, $2)"
+    query = 'INSERT INTO memoes(title, text) VALUES ($1, $2)'
     params = [title, text]
     excute(query, params)
   end
 
   def self.delete(id: memo_id)
-    query = "DELETE FROM  memoes where id = ($1)"
+    query = 'DELETE FROM  memoes where id = ($1)'
     params = [id]
     excute(query, params)
   end
 
   def self.patch(id: memo_id, title: memo_title, text: memot_text)
-    query = "UPDATE memoes SET (title, text) = ($1, $2) where id = ($3)"
-    params = [title, text,id]
+    query = 'UPDATE memoes SET (title, text) = ($1, $2) where id = ($3)'
+    params = [title, text, id]
     excute(query, params)
   end
 end
@@ -40,15 +39,14 @@ def excute(query, params)
   connection.exec_params(query, params)
 end
 
-conn = PG.connect( dbname: 'postgres' )
-result = conn.exec("SELECT * FROM memoes")
+conn = PG.connect(dbname: 'postgres')
+result = conn.exec('SELECT * FROM memoes')
 conn.close
-
 
 get '/memos' do
   @page_name = 'Top'
-  conn = PG::Connection.new(:host => 'localhost',  :dbname => 'postgres', :port => '5432')
-  result = conn.exec("SELECT * FROM memoes")
+  conn = PG::Connection.new(host: :localhost, dbname: :postgres, port: :'5432')
+  result = conn.exec('SELECT * FROM memoes')
   conn.close
   @memos = result
   erb :index
@@ -66,7 +64,7 @@ get '/memos/:id' do
     'text' => '',
     'id' => ''
   }
-  memo_col = result.find{|row| row['id'] == params[:id]}
+  memo_col = result.find { |row| row['id'] == params[:id] }
   @memo['title'] = memo_col['title']
   @memo['text'] = memo_col['text']
   @memo['id'] = memo_col['id']
@@ -79,7 +77,7 @@ post '/memos' do
 end
 
 delete '/memos/:id' do
-  memo_col = result.find{|row| row['id'] == params[:id]}
+  result.find { |row| row['id'] == params[:id] }
   Memo.delete(id: params[:id])
   redirect to('/memos')
 end
@@ -91,7 +89,7 @@ get '/memos/:id/edit' do
     'text' => '',
     'id' => ''
   }
-  memo_col = result.find{|row| row['id'] == params[:id]}
+  memo_col = result.find { |row| row['id'] == params[:id] }
   @memo['title'] = memo_col['title']
   @memo['text'] = memo_col['text']
   @memo['id'] = memo_col['id']
@@ -100,7 +98,7 @@ get '/memos/:id/edit' do
 end
 
 patch '/memos/:id' do
-  memo_col = result.find{|row| row['id'] == params[:id]}
+  result.find { |row| row['id'] == params[:id] }
   Memo.patch(id: params[:id], title: params[:title], text: params[:text])
   redirect to('/memos')
 end
