@@ -15,28 +15,28 @@ helpers do
 end
 
 class Memo
-  def self.create(title: title, text: text)
+  def self.create(title: title(), text: text())
     query = 'INSERT INTO memoes(title, text) VALUES ($1, $2)'
     params = [title, text]
     excute(query, params)
   end
 
-  def self.delete(id: id)
+  def self.delete(id: id())
     query = 'DELETE FROM  memoes where id = ($1)'
     params = [id]
     excute(query, params)
   end
 
-  def self.patch(id: id, title: title, text: text)
+  def self.patch(id: id(), title: title(), text: text())
     query = 'UPDATE memoes SET (title, text) = ($1, $2) where id = ($3)'
     params = [title, text, id]
     excute(query, params)
   end
-end
 
-def excute(query, params)
-  connection = PG::Connection.new(dbname: 'postgres')
-  connection.exec_params(query, params)
+  def self.excute(query, params)
+    connection = PG::Connection.new(dbname: 'postgres')
+    connection.exec_params(query, params)
+  end
 end
 
 conn = PG.connect(dbname: 'postgres')
