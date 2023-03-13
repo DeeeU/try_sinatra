@@ -39,6 +39,16 @@ class Memo
   end
 end
 
+def find_memo(data)
+  @memo = {
+    'title' => '',
+    'text' => '',
+    'id' => ''
+  }
+  @memo = data.find{ |row| row['id'] == params[:id] }
+  @memo
+end
+
 conn = PG.connect(dbname: 'postgres')
 result = conn.exec('SELECT * FROM memoes')
 conn.close
@@ -59,15 +69,7 @@ end
 
 get '/memos/:id' do
   @page_name = 'Detail'
-  @memo = {
-    'title' => '',
-    'text' => '',
-    'id' => ''
-  }
-  memo_col = result.find { |row| row['id'] == params[:id] }
-  @memo['title'] = memo_col['title']
-  @memo['text'] = memo_col['text']
-  @memo['id'] = memo_col['id']
+  find_memo(result)
   erb :detail
 end
 
@@ -84,21 +86,13 @@ end
 
 get '/memos/:id/edit' do
   @page_name = 'Edit'
-  @memo = {
-    'title' => '',
-    'text' => '',
-    'id' => ''
-  }
-  memo_col = result.find { |row| row['id'] == params[:id] }
-  @memo['title'] = memo_col['title']
-  @memo['text'] = memo_col['text']
-  @memo['id'] = memo_col['id']
+  find_memo(result)
 
   erb :edit
 end
 
 patch '/memos/:id' do
-  result.find { |row| row['id'] == params[:id] }
+  find_memo(result)
   Memo.patch(id: params[:id], title: params[:title], text: params[:text])
   redirect to('/memos')
 end
