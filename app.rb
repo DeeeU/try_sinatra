@@ -15,19 +15,19 @@ helpers do
 end
 
 class Memo
-  def self.create(title: memo_title, text: memo_text)
+  def self.create(title: title, text: text)
     query = 'INSERT INTO memoes(title, text) VALUES ($1, $2)'
     params = [title, text]
     excute(query, params)
   end
 
-  def self.delete(id: memo_id)
+  def self.delete(id: id)
     query = 'DELETE FROM  memoes where id = ($1)'
     params = [id]
     excute(query, params)
   end
 
-  def self.patch(id: memo_id, title: memo_title, text: memot_text)
+  def self.patch(id: id, title: title, text: text)
     query = 'UPDATE memoes SET (title, text) = ($1, $2) where id = ($3)'
     params = [title, text, id]
     excute(query, params)
