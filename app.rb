@@ -79,7 +79,7 @@ post '/memos' do
 end
 
 delete '/memos/:id' do
-  result.find { |row| row['id'] == params[:id] }
+  find_memo(result)
   Memo.delete(id: params[:id])
   redirect to('/memos')
 end
