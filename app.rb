@@ -87,7 +87,6 @@ end
 get '/memos/:id/edit' do
   @page_name = 'Edit'
   find_memo(result)
-
   erb :edit
 end
 
