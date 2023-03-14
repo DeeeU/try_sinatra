@@ -12,7 +12,7 @@ begin
   puts 'Successfully created connection to database'
 
   # Drop previous table of same name if one exists
-  connection.exec('DROP TABLE IF EXISTS memoes;')
+  connection.exec('DROP TABLE IF EXISTS memos;')
   puts 'Finished dropping table (if existed).'
 
   # exists uuid-ossp
