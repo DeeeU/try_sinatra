@@ -14,8 +14,19 @@ gem の導入
 $bundle install
 ```
 
-DB(memoes)の作成
+DB(db_sinatra)の作成
+
 ```db
+$psql -U postgres
+
+postgres=# create database db_sinatra;
+
+postgres=# exit;
+```
+
+table(memos)の作成
+
+```table
 $ruby database/data.rb
 ```
 
