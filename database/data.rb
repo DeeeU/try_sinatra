@@ -5,7 +5,7 @@ require 'pg'
 begin
   # Initialize connection variables.
   host = String('localhost')
-  database = String('db_sinatra')
+  database = String('memo_db')
 
   # Initialize connection object.
   connection = PG::Connection.new(host: host, dbname: database, port: 5432)

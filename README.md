@@ -14,12 +14,12 @@ gem の導入
 $bundle install
 ```
 
-DB(db_sinatra)の作成
+DB(memo_db)の作成
 
 ```db
 $psql -U postgres
 
-postgres=# create database db_sinatra;
+postgres=# create database memo_db;
 
 postgres=# exit;
 ```

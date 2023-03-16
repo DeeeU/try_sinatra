@@ -38,7 +38,7 @@ class Memo
   end
 
   def self.conn
-    @conn ||= PG.connect(dbname: 'db_sinatra')
+    @conn ||= PG.connect(dbname: 'memo_db')
   end
 
   def self.read_memos
