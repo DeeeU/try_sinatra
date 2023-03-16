@@ -36,24 +36,23 @@ class Memo
   def self.excute(query, params)
     conn.exec_params(query, params)
   end
+
+  def self.conn
+    @conn ||= PG.connect(dbname: 'db_sinatra')
+  end
+
+  def self.read_memos
+    conn.exec('SELECT * FROM memos')
+  end
 end
 
 def find_memo(data)
-  @memo = data.find{ |row| row['id'] == params[:id] }
-  @memo
-end
-
-def conn
-  @conn ||= PG.connect(dbname: 'db_sinatra')
-end
-
-def read_memos
-  conn.exec('SELECT * FROM memos')
-end
+    @memo = data.find{ |row| row['id'] == params[:id] }
+  end
 
 get '/memos' do
   @page_name = 'Top'
-  @memos = read_memos
+  @memos = Memo.read_memos
   erb :index
 end
 
@@ -64,7 +63,7 @@ end
 
 get '/memos/:id' do
   @page_name = 'Detail'
-  find_memo(read_memos)
+  find_memo(Memo.read_memos)
   erb :detail
 end
 
@@ -74,19 +73,19 @@ post '/memos' do
 end
 
 delete '/memos/:id' do
-  find_memo(read_memos)
+  find_memo(Memo.read_memos)
   Memo.delete(id: params[:id])
   redirect to('/memos')
 end
 
 get '/memos/:id/edit' do
   @page_name = 'Edit'
-  find_memo(read_memos)
+  find_memo(Memo.read_memos)
   erb :edit
 end
 
 patch '/memos/:id' do
-  find_memo(read_memos)
+  find_memo(Memo.read_memos)
   Memo.patch(id: params[:id], title: params[:title], text: params[:text])
   redirect to('/memos')
 end
