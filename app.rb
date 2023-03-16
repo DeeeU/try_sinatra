@@ -39,11 +39,6 @@ class Memo
 end
 
 def find_memo(data)
-  @memo = {
-    'title' => '',
-    'text' => '',
-    'id' => ''
-  }
   @memo = data.find{ |row| row['id'] == params[:id] }
   @memo
 end
