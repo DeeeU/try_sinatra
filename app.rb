@@ -37,18 +37,19 @@ class Memo
     conn.exec_params(query, params)
   end
 
-  def self.conn
+  def conn
     @conn ||= PG.connect(dbname: 'memo_db')
   end
 
   def self.read_memos
     conn.exec('SELECT * FROM memos')
   end
-end
 
-def find_memo(data)
+  def find_memo(data)
     @memo = data.find{ |row| row['id'] == params[:id] }
   end
+
+end
 
 get '/memos' do
   @page_name = 'Top'
