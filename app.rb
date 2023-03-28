@@ -37,7 +37,7 @@ class Memo
     conn.exec_params(query, params)
   end
 
-  def conn
+  def self.conn
     @conn ||= PG.connect(dbname: 'memo_db')
   end
 
@@ -45,10 +45,11 @@ class Memo
     conn.exec('SELECT * FROM memos')
   end
 
-  def find_memo(data)
-    @memo = data.find{ |row| row['id'] == params[:id] }
+  def self.find_memo(id: id())
+    query = 'SELECT * FROM memos WHERE id = ($1)'
+    params = [id]
+    excute(query, params)
   end
-
 end
 
 get '/memos' do
@@ -64,7 +65,7 @@ end
 
 get '/memos/:id' do
   @page_name = 'Detail'
-  find_memo(Memo.read_memos)
+  @memos = Memo.find_memo(id: params[:id])
   erb :detail
 end
 
@@ -74,19 +75,17 @@ post '/memos' do
 end
 
 delete '/memos/:id' do
-  find_memo(Memo.read_memos)
   Memo.delete(id: params[:id])
   redirect to('/memos')
 end
 
 get '/memos/:id/edit' do
   @page_name = 'Edit'
-  find_memo(Memo.read_memos)
+  @memos = Memo.find_memo(id: params[:id])
   erb :edit
 end
 
 patch '/memos/:id' do
-  find_memo(Memo.read_memos)
   Memo.patch(id: params[:id], title: params[:title], text: params[:text])
   redirect to('/memos')
 end
