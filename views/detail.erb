@@ -1,12 +1,16 @@
 <h1>Detail</h1>
 <a href='/memos'>Home</a>
-<h2>Title</h2>
-<%= h(@memo['title']) %>
-<h2>Text</h2>
-<%= h(@memo['text']) %>
 
-<form method="POST" action="<%= @id %>">
-    <input type="hidden" name="_method" value="delete">
-    <input type="submit" value="Delete">
-    <a href="/memos/<%= @id %>/edit">Edit</a>
-</form>
+<% @memos.each do |memo| %>
+  <h2>Title</h2>
+  <%= h(memo['title']) %>
+  <h2>Text</h2>
+  <%= h(memo['text']) %>
+
+
+  <form method="POST" action="<%= memo['id'] %>">
+      <input type="hidden" name="_method" value="delete">
+      <input type="submit" value="Delete">
+      <a href="/memos/<%= memo['id'] %>/edit">Edit</a>
+  </form>
+<% end %>

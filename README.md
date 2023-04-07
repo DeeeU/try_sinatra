@@ -14,6 +14,22 @@ gem の導入
 $bundle install
 ```
 
+DB(memo_db)の作成
+
+```db
+$psql -U postgres
+
+postgres=# create database memo_db;
+
+postgres=# exit;
+```
+
+table(memos)の作成
+
+```table
+$ruby database/data.rb
+```
+
 立ち上げ方
 
 ```bash

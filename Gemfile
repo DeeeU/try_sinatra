@@ -9,3 +9,4 @@ end
 gem 'puma'
 gem 'sinatra'
 gem 'sinatra-contrib'
+gem 'pg'

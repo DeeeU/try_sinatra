@@ -2,6 +2,7 @@
 
 require 'sinatra'
 require 'sinatra/reloader'
+require 'pg'
 require 'csv'
 require 'securerandom'
 
@@ -13,11 +14,47 @@ helpers do
   end
 end
 
-DATABASE_PATH = 'database/data.csv'
+class Memo
+  def self.create(title: title(), text: text())
+    query = 'INSERT INTO memos(title, text) VALUES ($1, $2)'
+    params = [title, text]
+    excute(query, params)
+  end
+
+  def self.delete(id: id())
+    query = 'DELETE FROM  memos where id = ($1)'
+    params = [id]
+    excute(query, params)
+  end
+
+  def self.patch(id: id(), title: title(), text: text())
+    query = 'UPDATE memos SET (title, text) = ($1, $2) where id = ($3)'
+    params = [title, text, id]
+    excute(query, params)
+  end
+
+  def self.excute(query, params)
+    conn.exec_params(query, params)
+  end
+
+  def self.conn
+    @conn ||= PG.connect(dbname: 'memo_db')
+  end
+
+  def self.read_memos
+    conn.exec('SELECT * FROM memos')
+  end
+
+  def self.find_memo(id: id())
+    query = 'SELECT * FROM memos WHERE id = ($1)'
+    params = [id]
+    excute(query, params)
+  end
+end
 
 get '/memos' do
   @page_name = 'Top'
-  @memos = CSV.read(DATABASE_PATH, headers: true)
+  @memos = Memo.read_memos
   erb :index
 end
 
@@ -28,59 +65,27 @@ end
 
 get '/memos/:id' do
   @page_name = 'Detail'
-  @memo = {
-    'title' => '',
-    'text' => '',
-    'id' => ''
-  }
-  memo_table = CSV.table(DATABASE_PATH, headers: true)
-  memo_col = memo_table.find{|row| row[0] == params[:id]}
-  @memo['title'] = memo_col[:title]
-  @memo['text'] = memo_col[:text]
-  @memo['id'] = memo_col[:id]
+  @memos = Memo.find_memo(id: params[:id])
   erb :detail
 end
 
 post '/memos' do
-  CSV.open(DATABASE_PATH, 'a') do |data|
-    data.puts [SecureRandom.uuid, params[:title], params[:text], Time.now]
-  end
+  Memo.create(title: params[:title], text: params[:text])
   redirect to('/memos')
 end
 
 delete '/memos/:id' do
-  csv_table = CSV.table(DATABASE_PATH)
-  csv_table.delete_if { |row| row[0] == params[:id] }
-  File.open(DATABASE_PATH, 'w') do |data|
-    data.write(csv_table.to_csv)
-  end
+  Memo.delete(id: params[:id])
   redirect to('/memos')
 end
 
 get '/memos/:id/edit' do
   @page_name = 'Edit'
-  @memo = {
-    'title' => '',
-    'text' => '',
-    'id' => ''
-  }
-  CSV.foreach(DATABASE_PATH, headers: true) do |row|
-    if row['id'] == params[:id]
-      @memo['title'] = row['title']
-      @memo['text'] = row['text']
-      @memo['id'] = row['id']
-    end
-  end
+  @memos = Memo.find_memo(id: params[:id])
   erb :edit
 end
 
 patch '/memos/:id' do
-  csv_table = CSV.table(DATABASE_PATH)
-  change_col = csv_table.find{|row| row[0] == params[:id]}
-  change_col[:title] = params[:title]
-  change_col[:text] = params[:text]
-  File.open(DATABASE_PATH, 'w') do |data|
-    data.write(csv_table.to_csv)
-  end
+  Memo.patch(id: params[:id], title: params[:title], text: params[:text])
   redirect to('/memos')
 end

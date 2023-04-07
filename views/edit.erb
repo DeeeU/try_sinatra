@@ -1,15 +1,18 @@
 <h1>Edit</h1>
 <a href='/memos'>Home</a>
-<form action="/memos/<%= @memo['id'] %>" method="POST">
-  <div>
-    title:<input name="title" placeholder="title" value="<%= h(@memo['title']) %>">
-  </div>
-  <div>
-    text:
-    <textarea name="text" rows="5" placeholder="text"><%= h(@memo['text']) %></textarea>
-  </div>
-  <div>
-    <input type="hidden" name="_method" value="patch">
-    <input type= "submit" value="Done">
-  </div>
-</form>
+
+<% @memos.each do |memo| %>
+  <form action="/memos/<%= memo['id'] %>" method="POST">
+    <div>
+      title:<input name="title" placeholder="title" value="<%= h(memo['title']) %>">
+    </div>
+    <div>
+      text:
+      <textarea name="text" rows="5" placeholder="text"><%= h(memo['text']) %></textarea>
+    </div>
+    <div>
+      <input type="hidden" name="_method" value="patch">
+      <input type= "submit" value="Done">
+    </div>
+  </form>
+<% end %>
